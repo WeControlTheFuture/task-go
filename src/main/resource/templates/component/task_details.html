@@ -1,0 +1,81 @@
+<div id="do_task_box" class="box box-info">
+	<div class="box-header with-border">
+		<div class="user-block">
+			<img class="img-circle" th:src="${task.createUser.headpic}" alt="User Image"> <span class="username" th:text="${task.title}"></a></span> <span class="description"><span
+				th:text="${task.createUser.name}"></span> 创建于 - <span th:text="${task.createTs}"></span></span>
+		</div>
+		<div class="box-tools pull-right">
+			<button type="button" class="btn btn-box-tool">
+				<i class="fa fa-upload"></i>
+			</button>
+			<button type="button" class="btn btn-box-tool" data-widget="remove">
+				<i class="fa fa-times"></i>
+			</button>
+		</div>
+	</div>
+	<div class="box-body">
+		<div th:utext="${task.description}"></div>
+		<ul id="attechment_ul" class="products-list product-list-in-box">
+			<li class="item">
+				<div class="product-img">
+					<img src="icons/excel.jpg" alt="Product Image">
+				</div>
+				<div class="product-info">
+					<a href="javascript:void(0)" class="product-title">本月已入账的款项.xlxs </a> <span class="product-description"> 班玉🐑 上传于 - 2019/07/10 15:48:33</span>
+				</div>
+			</li>
+			<li class="item">
+				<div class="product-img">
+					<img src="icons/ppt.jpg" alt="Product Image">
+				</div>
+				<div class="product-info">
+					<a href="javascript:void(0)" class="product-title">关于部门相关改革的若干建议.ppt </a> <span class="product-description"> 班玉🐑 上传于 - 2019/07/10 15:48:33</span>
+				</div>
+			</li>
+		</ul>
+		<small class="label label-danger" th:if="${task.leftDays != null && task.leftDays<3}"> <span class="fa fa-clock-o" th:text="${task.leftDays}"></span><i>天</i>
+		</small> <small class="label label-warning" th:if="${task.leftDays != null && task.leftDays>=3 && task.leftDays<7}"> <span class="fa fa-clock-o"
+			th:text="${task.leftDays}"></span><i>天</i>
+		</small> <small class="label label-primary" th:if="${task.leftDays != null && task.leftDays>=7}"> <span class="fa fa-clock-o" th:text="${task.leftDays}"></span><i>天</i>
+		</small>
+		<div class="btn-group">
+			<button class="label label-info dropdown-toggle" data-toggle="dropdown">
+				处理中<span class="fa fa-caret-down"></span>
+			</button>
+			<ul class="dropdown-menu label-dropdown-menu">
+				<li><button class="label label-warning ">等待</button></li>
+				<li><button class="label label-danger">问题</button></li>
+				<li><button class="label label-success">完成</button></li>
+			</ul>
+		</div>
+		<span class="pull-right text-muted">2 个文档附件 - 5条评论</span>
+
+	</div>
+	<div class="box-footer box-comments">
+		<div class="box-comment">
+			<img class="img-circle img-sm" src="../dist/img/user3-128x128.jpg" alt="User Image">
+
+			<div class="comment-text">
+				<span class="username"> Maria Gonzales <span class="text-muted pull-right">8:03 PM Today</span>
+				</span> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+			</div>
+		</div>
+		<div class="box-comment">
+			<img class="img-circle img-sm" src="../dist/img/user5-128x128.jpg" alt="User Image">
+
+			<div class="comment-text">
+				<span class="username"> Nora Havisham <span class="text-muted pull-right">8:03 PM Today</span>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="box-footer">
+		<form action="#" method="post">
+			<img class="img-responsive img-circle img-sm" src="../dist/img/user4-128x128.jpg" alt="Alt Text">
+			<div class="img-push">
+				<input type="text" class="form-control input-sm" placeholder="按回车键 可以提交评论">
+			</div>
+		</form>
+	</div>
+</div>
+<script src="/js/task_detail.js" type="text/javascript"></script>

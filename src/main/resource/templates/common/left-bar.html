@@ -1,0 +1,48 @@
+
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+
+	<!-- sidebar: style can be found in sidebar.less -->
+	<section class="sidebar">
+
+		<!-- Sidebar user panel (optional) -->
+		<div class="user-panel">
+			<div class="pull-left image">
+				<img th:src="${session.user.headpic}" class="img-circle" alt="User Image">
+			</div>
+			<div class="pull-left info">
+				<p th:text="${session.user.name}"></p>
+				<!-- Status -->
+				<a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+			</div>
+		</div>
+
+		<!-- Sidebar Menu -->
+		<ul id="menu_ul" class="sidebar-menu" data-widget="tree">
+			<li class="active"><a href="#" onclick="load('/daily',$(this))"> <i class="fa fa-dashboard"></i> <span>我的工作</span>
+			</a></li>
+			<li><a href="#" onclick="load('/taskpool',$(this))"><i class="fa fa-circle-o"></i><span>任务池</span></a></li>
+
+			<li><a href="#" onclick="load('/taskprocess',$(this))"><i class="fa fa-circle-o"></i><span>进度查看</span></a></li>
+			<li><a href="#" onclick="load('/rankinglist',$(this))"><i class="fa fa-circle-o"></i><span>排行榜</span></a></li>
+
+			<!-- 			<li class=" treeview"><a href="#"> <i class="fa fa-dashboard"></i> <span>日常管理</span> <span class="pull-right-container"> <i -->
+			<!-- 						class="fa fa-angle-left pull-right"></i> -->
+			<!-- 				</span> -->
+			<!-- 			</a> -->
+			<!-- 				<ul class="treeview-menu"> -->
+			<!-- 					<li><a href="#" onclick="load('/taskprocess',$(this))"><i class="fa fa-circle-o"></i>进度查看</a></li> -->
+			<!-- 				</ul></li> -->
+			<!-- 			<li class=" treeview "><a href="#"> <i class="fa fa-dashboard"></i> <span>测试</span> <span class="pull-right-container"> <i -->
+			<!-- 						class="fa fa-angle-left pull-right"></i> -->
+			<!-- 				</span> -->
+			<!-- 			</a> -->
+			<!-- 				<ul class="treeview-menu"> -->
+			<!-- 					<li><a href="#" onclick="load('/daily',$(this))"><i class="fa fa-circle-o"></i>日常管理</a></li> -->
+			<!-- 					<li><a href="#" onclick="load('/taskprocess',$(this))"><i class="fa fa-circle-o"></i>进度查看</a></li> -->
+			<!-- 				</ul></li> -->
+		</ul>
+		<!-- /.sidebar-menu -->
+	</section>
+</aside>
+

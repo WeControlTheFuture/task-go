@@ -1,0 +1,21 @@
+.label-dropdown-menu{
+	
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: @zindex-dropdown;
+  display: none; // none by default, but block on "open" of the menu
+  float: left;
+  min-width: auto;
+  padding: 0px 0;
+  margin: 0px 0 0; // override default ul
+  font-size: @font-size-base;
+  text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
+  list-style: none;
+  background-color: @dropdown-bg;
+  background-clip: padding-box;
+  border: 0px solid @dropdown-fallback-border; // IE8 fallback
+  border: 0px solid @dropdown-border;
+  border-radius: @border-radius-base;
+  .box-shadow(0 6px 12px rgba(0, 0, 0, .175));
+}

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    jdbc-url: jdbc:mysql://127.0.0.1:3306/mini_oa
+    username: root
+    password: bixiyan
+  servlet:
+    multipart:
+       max-file-size: 200000000
+       max-request-size: 200000000
+#logging:
+#   level:
+#     root: DEBUG

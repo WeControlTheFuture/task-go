@@ -1,0 +1,108 @@
+
+<section class="content-header">
+	<h1>
+		我的工作 <small>日常办公</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+		<li class="active">Here</li>
+	</ol>
+</section>
+
+<!-- Main content -->
+<section class="content container-fluid">
+	<div class="row">
+		<div class="col-md-6">
+			<div id="todo_list_box" class="box box-info">
+				<div class="box-header with-border">
+					<h3 class="box-title">待办</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<div class="box-body">
+					<ul class="todo-list">
+						<li th:each="todo : ${todos}"><span class="handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i>
+						</span><span class="text" th:text="${todo.title}"></span> <small class="label label-danger" th:if="${todo.leftDays != null && todo.leftDays<3}"> <span
+								class="fa fa-clock-o" th:text="${todo.leftDays}"></span><i>天</i>
+						</small> <small class="label label-warning" th:if="${todo.leftDays != null && todo.leftDays>=3 && todo.leftDays<7}"> <span class="fa fa-clock-o"
+								th:text="${todo.leftDays}"></span><i>天</i>
+						</small> <small class="label label-primary" th:if="${todo.leftDays != null && todo.leftDays>=7}"> <span class="fa fa-clock-o" th:text="${todo.leftDays}"></span><i>天</i>
+						</small>
+							<div class="tools" style="display: inline">
+								<i class="  fa fa-edit " th:onclick="|show_do_task(${todo.id})|"></i>
+							</div></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="do_task_div" class="col-md-6"></div>
+	</div>
+	<div class="row">
+		<div class="col-md-7">
+			<div id="create_task_box" class="box box-info">
+				<div class="box-header with-border">
+					<h3 class="box-title">创建任务</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<form id="task_form" class="form-horizontal">
+						<div class="box-body">
+							<div class="row">
+								<div class="form-group">
+									<label for="inputTaskName" class="col-lg-1 control-label">名称</label>
+									<div class="col-lg-4">
+										<input type="email" class="form-control" id="inputTaskName" placeholder="任务名称">
+									</div>
+									<label for="inputTaskName" class="col-lg-2 control-label">截止日期</label>
+									<div class="col-lg-4">
+										<div class="input-group date">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input type="text" class="form-control pull-right" id="stop_date_picker" readonly="readonly">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group">
+									<label for="inputTaskDescription" class="col-lg-1 control-label">描述</label>
+									<div class="col-lg-11">
+										<form>
+											<textarea id="inputTaskDescription" name="taskDescription" rows="10" cols="80">
+                    							</textarea>
+										</form>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 input-group ">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-assignto">分给</button>
+									</div>
+									<input id="assign_to_input" type="text" class="form-control" readonly="readonly">
+								</div>
+							</div>
+						</div>
+
+						<div class="box-footer">
+							<button id="create_task" type="submit" class="btn btn-info pull-right">创建</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- /.box -->
+		</div>
+	</div>
+	<!-- /.col -->
+</section>
+<script src="/js/dashboard.js" />

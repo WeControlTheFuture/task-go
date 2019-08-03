@@ -1,0 +1,30 @@
+<section class="content-header">
+	<h1>
+		任务池 <small>未分配任务</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+		<li class="active">Here</li>
+	</ol>
+</section>
+<section class="content container-fluid">
+	<div id="todo_list_box" class="box box-info">
+		<div class="box-header with-border">
+			<h3 class="box-title">快抢</h3>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		<div class="box-body">
+			<ul class="todo-list">
+				<li th:each="todo : ${todos}"><span class="handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i>
+				</span><span class="text" th:text="${todo.title}"></span> <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small> <!-- General tools such as edit or delete-->
+					<div class="tools" style="display: inline">
+						<i class="fa  fa-hand-lizard-o" th:onclick="|show_do_task(${todo.id})|"></i>
+					</div></li>
+			</ul>
+		</div>
+	</div>
+</section>
