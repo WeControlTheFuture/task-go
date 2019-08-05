@@ -12,7 +12,7 @@ import com.wctf.task.go.model.TaskAttr;
 @Mapper
 public interface TaskAttrMapper {
 
-	@Insert(value = { "insert into task_attr(task_id,type,value,user_code) value(#{taskId},#{value},#{type},#{userCode})" })
+	@Insert(value = { "insert into task_attr(create_ts,task_id,type,value,user_code) value(#{createTs},#{taskId},#{type},#{value},#{userCode})" })
 	public int createTaskAttr(TaskAttr taskAttr);
 
 	@Select(value = { "select * from task_attr where task_id=#{taskId} order by create_ts desc" })

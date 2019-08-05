@@ -1,5 +1,6 @@
 <div id="do_task_box" class="box box-info">
 	<div class="box-header with-border">
+		<input id="task_id" type="hidden" th:value="${task.id}" />
 		<div class="user-block">
 			<img class="img-circle" th:src="${task.createUser.headpic}" alt="User Image"> <span class="username" th:text="${task.title}"></a></span> <span class="description"><span
 				th:text="${task.createUser.name}"></span> 创建于 - <span th:text="${task.createTs}"></span></span>

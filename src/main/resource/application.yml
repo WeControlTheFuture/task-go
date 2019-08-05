@@ -12,6 +12,9 @@ spring:
     multipart:
        max-file-size: 200000000
        max-request-size: 200000000
+task:
+   upload:
+      path: /Users/bixy/sc_attech
 #logging:
 #   level:
 #     root: DEBUG

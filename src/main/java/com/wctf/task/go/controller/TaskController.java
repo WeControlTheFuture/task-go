@@ -1,11 +1,12 @@
 package com.wctf.task.go.controller;
 
 import java.io.File;
-import java.io.IOException;
+import java.sql.Timestamp;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.wctf.task.go.model.AttechmentUploadResponse;
 import com.wctf.task.go.model.BaseResponse;
 import com.wctf.task.go.model.CreateTaskParam;
 import com.wctf.task.go.service.TaskService;
+import com.wctf.task.go.service.UserService;
+import com.wctf.task.go.utils.FileUtil;
+import com.wctf.task.go.utils.TimeUtil;
 
 @RestController
 @RequestMapping("/task")
@@ -26,8 +31,11 @@ public class TaskController extends BaseController {
 
 	@Autowired
 	TaskService taskService;
+	@Autowired
+	UserService userService;
 
-	String SAVE_PATH = "/Users/bixy/sc_attech";
+	@Value("${task.upload.path}")
+	String savePath;
 
 	@RequestMapping(value = "/create", method = { RequestMethod.POST })
 	@ResponseBody
@@ -45,22 +53,26 @@ public class TaskController extends BaseController {
 
 	@PostMapping(value = "/attechment")
 	@ResponseBody
-	public BaseResponse taskAttechment(@RequestParam(value = "file", required = false) MultipartFile mpf) {
-		boolean flag = false;
-		if (mpf != null) {
-			System.out.print(mpf.getOriginalFilename() + "=====" + mpf);
+	public AttechmentUploadResponse taskAttechment(HttpServletRequest request, @RequestParam(value = "id") Integer id, @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
+		AttechmentUploadResponse response = new AttechmentUploadResponse();
+		if (multipartFile != null) {
+			System.out.print(multipartFile.getOriginalFilename() + "=====" + multipartFile);
 			try {
-				mpf.transferTo(getFile());
+				File saveFile = FileUtil.getMonthlyPathFile(savePath, multipartFile.getOriginalFilename());
+				multipartFile.transferTo(saveFile);
+				Timestamp createTs = taskService.addAttechment(super.getLoginUser(request), id, multipartFile.getOriginalFilename(), saveFile.getAbsolutePath());
+				response.setCode(0);
+				response.setUserName(userService.getUserByCode(super.getLoginUser(request)).getName());
+				response.setCreateTs(TimeUtil.yyyyMMddHHmmSSFormatTs(createTs));
 			} catch (Exception e) {
+				response.setCode(1);
+				response.setMsg("exception");
 				e.printStackTrace();
-				flag = false;
 			}
-			flag = true;
+		} else {
+			response.setCode(2);
+			response.setMsg("upload file is empty");
 		}
-		return mpf != null ? flag ? new BaseResponse("上传成功", 200) : new BaseResponse("上传失败", 200) : new BaseResponse("上传失败", 300);
-	}
-
-	private File getFile() {
-		return null;
+		return response;
 	}
 }

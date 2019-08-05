@@ -10,7 +10,7 @@ $(function() {
 		var file = e.dataTransfer.files[0];
 		var item = attechment_item(file.name);
 		$("#attechment_ul").append(item.html);
-		upload_attechment(file,item.progress_div_id);
+		upload_attechment(file,item.progress_div_id,item.item_div_id);
 	};
 	bodydiv.ondragover = function(e) {
 		$(bodydiv).css("border-style", "dashed");
@@ -23,9 +23,11 @@ $(function() {
 	}
 });
 
-function upload_attechment(file, progress_div_id){
+function upload_attechment(file, progress_div_id,item_div_id){
 	 var formData = new FormData();
-     formData.append("file",file);                  
+     formData.append("file",file);   
+     formData.append("id",$("#task_id").val());
+     console.log(formData)
      $.ajax({
         type:"post",
         async:true, 
@@ -54,7 +56,10 @@ function upload_attechment(file, progress_div_id){
         },                    
         success:function(data){  
         	console.log(data);
-            console.log("上传成功!!!!");                        
+        	if(data.code==0){
+        		 $("#"+item_div_id).append('<span class="product-description"> '+data.userName+' 上传于 - '+data.createTs+'</span>');
+        		console.log("上传成功!!!!");    
+        	}
         },
         error:function(){
             alert("上传失败！");
@@ -66,7 +71,8 @@ function attechment_item(filename) {
 	var html = '<li class="item">';
 	html += '<div class="product-img">';
 	html += '<img src="icons/' + get_file_pic(filename) + '" alt="Product Image">';
-	html += '</div><div class="product-info">';
+	var item_div_id = "item_div_"+progress_id;
+	html += '</div><div id="'+item_div_id+'" class="product-info">';
 	html += '<a href="javascript:void(0)" class="product-title">' + filename + ' </a> ';
 	var progress_div_id = 'progress_'+progress_id;
 	progress_id +=1;
@@ -77,6 +83,7 @@ function attechment_item(filename) {
 	var result= {};
 	result.html = html;
 	result.progress_div_id = progress_div_id;
+	result.item_div_id = item_div_id;
 	return result;
 }
 

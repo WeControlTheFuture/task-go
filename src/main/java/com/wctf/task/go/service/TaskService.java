@@ -1,5 +1,6 @@
 package com.wctf.task.go.service;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonObject;
 import com.wctf.task.go.dao.TaskAttrMapper;
 import com.wctf.task.go.dao.TaskMapper;
 import com.wctf.task.go.dao.UserMapper;
@@ -93,6 +95,21 @@ public class TaskService {
 			attr.setUser(userCache.computeIfAbsent(r.getUserCode(), k -> userMapper.getUserSimpleInfo(r.getUserCode())));
 			return attr;
 		}).collect(Collectors.groupingBy(TaskVoAttr::getType));
+	}
+
+	public Timestamp addAttechment(String userCode, Integer id, String fileName, String filePath) {
+		Timestamp createTs = new Timestamp(System.currentTimeMillis());
+		TaskAttr attr = new TaskAttr();
+		attr.setCreateTs(createTs);
+		attr.setType(TaskAttrType.ATTACHMENT);
+		attr.setTaskId(id);
+		attr.setUserCode(userCode);
+		JsonObject value = new JsonObject();
+		value.addProperty("fileName", fileName);
+		value.addProperty("filePath", filePath);
+		attr.setValue(value.toString());
+		taskAttrMapper.createTaskAttr(attr);
+		return createTs;
 	}
 
 	public void createComment(TaskAttr attr) {

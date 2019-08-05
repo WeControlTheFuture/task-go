@@ -6,6 +6,10 @@ public class BaseResponse implements Serializable {
 	private String msg;
 	private int code;
 
+	public BaseResponse() {
+
+	}
+
 	public BaseResponse(String msg) {
 		this.msg = msg;
 	}
