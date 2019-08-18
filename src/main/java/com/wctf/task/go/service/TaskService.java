@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +15,14 @@ import com.google.gson.JsonObject;
 import com.wctf.task.go.dao.TaskAttrMapper;
 import com.wctf.task.go.dao.TaskMapper;
 import com.wctf.task.go.dao.UserMapper;
+import com.wctf.task.go.model.Attachment;
+import com.wctf.task.go.model.Comment;
 import com.wctf.task.go.model.CreateTaskParam;
 import com.wctf.task.go.model.Task;
 import com.wctf.task.go.model.TaskAttr;
 import com.wctf.task.go.model.TaskAttrType;
 import com.wctf.task.go.model.TaskStatus;
 import com.wctf.task.go.model.TaskVo;
-import com.wctf.task.go.model.TaskVoAttr;
 import com.wctf.task.go.model.User;
 import com.wctf.task.go.utils.TimeUtil;
 
@@ -69,32 +69,30 @@ public class TaskService {
 			if (task.getStopDate() != null)
 				tv.setLeftDays(TimeUtil.getLeftDays(task.getStopDate()));
 			tv.setCreateUser(userMapper.getUserSimpleInfo(task.getCreater()));
-			Map<TaskAttrType, List<TaskVoAttr>> attrs = getTaskAttrs(id);
-			if (MapUtils.isNotEmpty(attrs)) {
-				tv.setAttachments(attrs.get(TaskAttrType.ATTACHMENT));
-				tv.setComments(attrs.get(TaskAttrType.COMMENT));
-			}
+			setTaskAttrs(tv, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return tv;
 	}
 
-	private Map<TaskAttrType, List<TaskVoAttr>> getTaskAttrs(Integer taskId) {
+	private void setTaskAttrs(TaskVo tv, Integer taskId) {
 		List<TaskAttr> attrs = taskAttrMapper.getTaskAttrByTaskId(taskId);
 		if (CollectionUtils.isEmpty(attrs))
-			return null;
+			return;
 		Map<String, User> userCache = new HashMap<>();
-		return attrs.stream().map(r -> {
-			TaskVoAttr attr = new TaskVoAttr();
-			try {
-				BeanUtils.copyProperties(attr, r);
-			} catch (Exception e) {
-				e.printStackTrace();
+		attrs.stream().forEach(r -> {
+			if (r.getType().equals(TaskAttrType.COMMENT)) {
+				Comment comment = new Comment(r);
+				comment.setUser(userCache.computeIfAbsent(r.getUserCode(), k -> userMapper.getUserSimpleInfo(r.getUserCode())));
+				tv.addComment(comment);
 			}
-			attr.setUser(userCache.computeIfAbsent(r.getUserCode(), k -> userMapper.getUserSimpleInfo(r.getUserCode())));
-			return attr;
-		}).collect(Collectors.groupingBy(TaskVoAttr::getType));
+			if (r.getType().equals(TaskAttrType.ATTACHMENT)) {
+				Attachment attachment = new Attachment(r);
+				attachment.setUser(userCache.computeIfAbsent(r.getUserCode(), k -> userMapper.getUserSimpleInfo(r.getUserCode())));
+				tv.addAttachment(attachment);
+			}
+		});
 	}
 
 	public Timestamp addAttechment(String userCode, Integer id, String fileName, String filePath) {
@@ -112,8 +110,15 @@ public class TaskService {
 		return createTs;
 	}
 
-	public void createComment(TaskAttr attr) {
+	public Timestamp createComment(String userCode, Integer id, String comment) {
+		Timestamp createTs = new Timestamp(System.currentTimeMillis());
+		TaskAttr attr = new TaskAttr();
+		attr.setTaskId(id);
+		attr.setCreateTs(createTs);
+		attr.setUserCode(userCode);
+		attr.setValue(comment);
 		attr.setType(TaskAttrType.COMMENT);
 		taskAttrMapper.createTaskAttr(attr);
+		return createTs;
 	}
 }

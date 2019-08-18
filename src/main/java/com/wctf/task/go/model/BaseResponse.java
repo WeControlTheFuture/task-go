@@ -5,9 +5,18 @@ import java.io.Serializable;
 public class BaseResponse implements Serializable {
 	private String msg;
 	private int code;
+	private String createTs;
 
 	public BaseResponse() {
 
+	}
+
+	public String getCreateTs() {
+		return createTs;
+	}
+
+	public void setCreateTs(String createTs) {
+		this.createTs = createTs;
 	}
 
 	public BaseResponse(String msg) {

@@ -30,7 +30,7 @@ public class MysqlUserDetailsService implements UserDetailsService, UserDetailsP
 			logger.error("can't find any user for username " + username + ", login may failed");
 			return null;
 		}
-		return new org.springframework.security.core.userdetails.User(username, encoder.encode(user.getPassword()), Arrays.asList(new SimpleGrantedAuthority(user.getRole())));
+		return new org.springframework.security.core.userdetails.User(username, encoder.encode(user.getPassword()), Arrays.asList(new SimpleGrantedAuthority("ROLE_"+user.getRole())));
 	}
 
 	@Override

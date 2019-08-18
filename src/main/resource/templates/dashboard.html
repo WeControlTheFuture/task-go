@@ -40,7 +40,7 @@
 		</div>
 		<div id="do_task_div" class="col-md-6"></div>
 	</div>
-	<div class="row">
+	<div class="row" sec:authorize="hasAnyAuthority('ROLE_manager')">
 		<div class="col-md-7">
 			<div id="create_task_box" class="box box-info">
 				<div class="box-header with-border">

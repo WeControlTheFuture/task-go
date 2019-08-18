@@ -16,7 +16,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		User userDetails = (User) authentication.getPrincipal();
-        logger.info("USER : " + userDetails.getUsername() + " LOGIN SUCCESS !  ");
+        logger.info("USER : " + userDetails.getUsername() + " with role "+userDetails.getAuthorities()+" LOGIN SUCCESS !  ");
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 

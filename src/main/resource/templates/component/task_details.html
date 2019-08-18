@@ -17,20 +17,13 @@
 	<div class="box-body">
 		<div th:utext="${task.description}"></div>
 		<ul id="attechment_ul" class="products-list product-list-in-box">
-			<li class="item">
+			<li class="item" th:each="attachment : ${task.attachments}">
 				<div class="product-img">
-					<img src="icons/excel.jpg" alt="Product Image">
+					<img th:src="${attachment.fileInfo.pic}" alt="Product Image">
 				</div>
 				<div class="product-info">
-					<a href="javascript:void(0)" class="product-title">本月已入账的款项.xlxs </a> <span class="product-description"> 班玉🐑 上传于 - 2019/07/10 15:48:33</span>
-				</div>
-			</li>
-			<li class="item">
-				<div class="product-img">
-					<img src="icons/ppt.jpg" alt="Product Image">
-				</div>
-				<div class="product-info">
-					<a href="javascript:void(0)" class="product-title">关于部门相关改革的若干建议.ppt </a> <span class="product-description"> 班玉🐑 上传于 - 2019/07/10 15:48:33</span>
+					<a href="javascript:void(0)" class="product-title"><span th:text="${attachment.fileInfo.fileName}"></span> </a> <span class="product-description"> <span
+						th:text="${attachment.user.name}"></span>上传于 - <span th:text="${attachment.createTs}"></span></span>
 				</div>
 			</li>
 		</ul>
@@ -49,32 +42,26 @@
 				<li><button class="label label-success">完成</button></li>
 			</ul>
 		</div>
-		<span class="pull-right text-muted">2 个文档附件 - 5条评论</span>
+		<span class="pull-right text-muted"><span th:text="${task.attachments.size()}"></span> 个文档附件 - <span th:text="${task.comments.size()}"></span>条评论</span>
 
 	</div>
-	<div class="box-footer box-comments">
-		<div class="box-comment">
-			<img class="img-circle img-sm" src="../dist/img/user3-128x128.jpg" alt="User Image">
+	<div id="comments_div" class="box-footer box-comments">
+		<div class="box-comment"  th:each="comment : ${task.comments}">
+			<img class="img-circle img-sm" th:src="${comment.user.headpic}" alt="User Image">
 
 			<div class="comment-text">
-				<span class="username"> Maria Gonzales <span class="text-muted pull-right">8:03 PM Today</span>
-				</span> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-			</div>
-		</div>
-		<div class="box-comment">
-			<img class="img-circle img-sm" src="../dist/img/user5-128x128.jpg" alt="User Image">
-
-			<div class="comment-text">
-				<span class="username"> Nora Havisham <span class="text-muted pull-right">8:03 PM Today</span>
-				</span>
+				<span class="username"> <span th:text="${comment.user.name}"></span><span class="text-muted pull-right" th:text="${comment.createTs}"></span></span>
+				<span th:text="${comment.value}"></span>
 			</div>
 		</div>
 	</div>
 	<div class="box-footer">
 		<form action="#" method="post">
-			<img class="img-responsive img-circle img-sm" src="../dist/img/user4-128x128.jpg" alt="Alt Text">
-			<div class="img-push">
-				<input type="text" class="form-control input-sm" placeholder="按回车键 可以提交评论">
+			<img class="img-responsive img-circle img-sm" th:src="${session.user.headpic}" alt="Alt Text">
+			<div class="img-push input-group margin">
+				<input id="task_comment_input" type="text" class="form-control " placeholder="按回车键 可以提交评论"> <span class="input-group-btn">
+					<button id="task_comment_submit" type="button" class="btn btn-info btn-flat">发送</button>
+				</span>
 			</div>
 		</form>
 	</div>

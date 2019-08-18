@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.wctf.task.go.model.AttechmentUploadResponse;
 import com.wctf.task.go.model.BaseResponse;
 import com.wctf.task.go.model.CreateTaskParam;
+import com.wctf.task.go.model.TaskDetailResponse;
+import com.wctf.task.go.model.User;
 import com.wctf.task.go.service.TaskService;
 import com.wctf.task.go.service.UserService;
 import com.wctf.task.go.utils.FileUtil;
@@ -51,10 +52,23 @@ public class TaskController extends BaseController {
 		return mv;
 	}
 
+	@PostMapping(value = "/comment")
+	@ResponseBody
+	public TaskDetailResponse taskComment(HttpServletRequest request, @RequestParam(value = "id") Integer id, @RequestParam(value = "comment") String comment) {
+		TaskDetailResponse response = new TaskDetailResponse();
+		Timestamp createTs = taskService.createComment(super.getLoginUser(request), id, comment);
+		response.setCode(0);
+		User user = userService.getUserByCode(super.getLoginUser(request));
+		response.setUserName(user.getName());
+		response.setUserPic(user.getHeadpic());
+		response.setCreateTs(TimeUtil.yyyyMMddHHmmSSFormatTs(createTs));
+		return response;
+	}
+
 	@PostMapping(value = "/attechment")
 	@ResponseBody
-	public AttechmentUploadResponse taskAttechment(HttpServletRequest request, @RequestParam(value = "id") Integer id, @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
-		AttechmentUploadResponse response = new AttechmentUploadResponse();
+	public TaskDetailResponse taskAttechment(HttpServletRequest request, @RequestParam(value = "id") Integer id, @RequestParam(value = "file", required = false) MultipartFile multipartFile) {
+		TaskDetailResponse response = new TaskDetailResponse();
 		if (multipartFile != null) {
 			System.out.print(multipartFile.getOriginalFilename() + "=====" + multipartFile);
 			try {

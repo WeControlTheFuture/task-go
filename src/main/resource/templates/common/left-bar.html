@@ -23,7 +23,7 @@
 			</a></li>
 			<li><a href="#" onclick="load('/taskpool',$(this))"><i class="fa fa-circle-o"></i><span>任务池</span></a></li>
 
-			<li><a href="#" onclick="load('/taskprocess',$(this))"><i class="fa fa-circle-o"></i><span>进度查看</span></a></li>
+			<li sec:authorize="hasAnyAuthority('ROLE_manager')"><a href="#" onclick="load('/taskprocess',$(this))"><i class="fa fa-circle-o"></i><span>进度查看</span></a></li>
 			<li><a href="#" onclick="load('/rankinglist',$(this))"><i class="fa fa-circle-o"></i><span>排行榜</span></a></li>
 
 			<!-- 			<li class=" treeview"><a href="#"> <i class="fa fa-dashboard"></i> <span>日常管理</span> <span class="pull-right-container"> <i -->

@@ -21,12 +21,36 @@ $(function() {
 		$(bodydiv).removeAttr("style", "");
 		return false;
 	}
+	
+	$("#task_comment_submit").on("click", function() {
+		var param = {};
+		param.comment = $("#task_comment_input").val();
+		param.id = $("#task_id").val();
+		console.log(param);
+		$.ajax({
+			type:"post",
+			data: param,
+			url: "/task/comment",
+			success:function(data){  
+				console.log(data);
+	        	if(data.code==0){
+	        		refresh_task(param.id);
+	        		console.log("评论成功!!!!");    
+	        	}
+			}
+		});
+	});
 });
+
+function refresh_task(id) {
+	$('#do_task_div').load('/task/detail?id='+id);
+}
 
 function upload_attechment(file, progress_div_id,item_div_id){
 	 var formData = new FormData();
+	 var task_id = $("#task_id").val();
      formData.append("file",file);   
-     formData.append("id",$("#task_id").val());
+     formData.append("id",task_id);
      console.log(formData)
      $.ajax({
         type:"post",
@@ -57,7 +81,8 @@ function upload_attechment(file, progress_div_id,item_div_id){
         success:function(data){  
         	console.log(data);
         	if(data.code==0){
-        		 $("#"+item_div_id).append('<span class="product-description"> '+data.userName+' 上传于 - '+data.createTs+'</span>');
+        		refresh_task(task_id);
+        		// $("#"+item_div_id).append('<span class="product-description"> '+data.userName+' 上传于 - '+data.createTs+'</span>');
         		console.log("上传成功!!!!");    
         	}
         },

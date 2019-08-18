@@ -1,6 +1,7 @@
 package com.wctf.task.go.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskVo {
@@ -11,8 +12,16 @@ public class TaskVo {
 	private String description;
 	private TaskStatus status;
 	private Integer leftDays;
-	List<TaskVoAttr> attachments;
-	List<TaskVoAttr> comments;
+	List<Attachment> attachments = new ArrayList<>();
+	List<Comment> comments = new ArrayList<>();
+
+	public void addAttachment(Attachment attachment) {
+		attachments.add(attachment);
+	}
+
+	public void addComment(Comment comment) {
+		comments.add(comment);
+	}
 
 	public Integer getId() {
 		return id;
@@ -70,19 +79,19 @@ public class TaskVo {
 		this.leftDays = leftDays;
 	}
 
-	public List<TaskVoAttr> getAttachments() {
+	public List<Attachment> getAttachments() {
 		return attachments;
 	}
 
-	public void setAttachments(List<TaskVoAttr> attachments) {
+	public void setAttachments(List<Attachment> attachments) {
 		this.attachments = attachments;
 	}
 
-	public List<TaskVoAttr> getComments() {
+	public List<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<TaskVoAttr> comments) {
+	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
 

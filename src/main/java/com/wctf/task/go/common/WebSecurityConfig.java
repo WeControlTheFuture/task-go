@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/bower_components/**", "/dist/**", "/js/**", "/plugins/**", "/profile/**", "/favicon.ico");
+		web.ignoring().antMatchers("/bower_components/**", "/dist/**", "/js/**", "/css/**", "/icons/**", "/plugins/**", "/profile/**", "/favicon.ico");
 	}
 
 }

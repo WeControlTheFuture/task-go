@@ -2,11 +2,20 @@ package com.wctf.task.go.model;
 
 import java.sql.Timestamp;
 
-public class TaskVoAttr {
+public class Comment {
 	private User user;
 	private Timestamp createTs;
 	private TaskAttrType type;
 	private String value;
+
+	public Comment() {
+	}
+	
+	public Comment(TaskAttr attr) {
+		this.createTs = attr.getCreateTs();
+		this.type = attr.getType();
+		this.value = attr.getValue();
+	}
 
 	public Timestamp getCreateTs() {
 		return createTs;
