@@ -45,10 +45,10 @@ public class PageController extends BaseController {
 		mv.addObject("todos", taskService.getTasks(getLoginUser(request)));
 		return mv;
 	}
-
-	@RequestMapping("/taskprocess")
-	public String taskProcess() {
-		return "task-process";
+	
+	@RequestMapping("/taskcreate")
+	public String taskCreate() {
+		return "task-create";
 	}
 
 	@RequestMapping("/rankinglist")

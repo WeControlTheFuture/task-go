@@ -1,6 +1,9 @@
 package com.wctf.task.go.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,13 +41,34 @@ public class TaskService {
 	@Autowired
 	UserMapper userMapper;
 
+	public Map<User, List<TaskVo>> getMemberTasks(List<User> users) {
+		if (CollectionUtils.isEmpty(users))
+			return Collections.emptyMap();
+		Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getCode, r -> r));
+		List<Task> tasks = taskMapper.getTasksExcludeStatus(new ArrayList<String>(userMap.keySet()), TaskStatus.CLOSE);
+		if (CollectionUtils.isEmpty(tasks))
+			return Collections.emptyMap();
+		Map<User, List<TaskVo>> resultMap = new HashMap<User, List<TaskVo>>();
+		tasks.forEach(t -> {
+			List<TaskVo> taskVos = resultMap.computeIfAbsent(userMap.get(t.getAssignee()), k -> new ArrayList<>());
+			TaskVo tv = new TaskVo();
+			try {
+				BeanUtils.copyProperties(tv, t);
+				taskVos.add(tv);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		return resultMap;
+	}
+
 	public void create(String creater, CreateTaskParam param) {
 		param.setCreater(creater);
 		taskMapper.create(param);
 	}
 
 	public List<TaskVo> getTasks(String assignee) {
-		List<Task> tasks = taskMapper.getTaskExcludeStatus(assignee, TaskStatus.DONE);
+		List<Task> tasks = taskMapper.getTaskExcludeStatus(assignee, Arrays.asList(TaskStatus.DONE, TaskStatus.CLOSE));
 		if (CollectionUtils.isNotEmpty(tasks)) {
 			return tasks.parallelStream().map(r -> {
 				TaskVo tv = new TaskVo();

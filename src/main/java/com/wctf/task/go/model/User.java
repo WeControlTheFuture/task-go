@@ -1,6 +1,8 @@
 package com.wctf.task.go.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
 	private String code;
 	private String name;
 	private String role;

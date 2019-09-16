@@ -10,8 +10,17 @@ public class Task implements Serializable {
 	private Timestamp createTs;
 	private String title;
 	private String description;
+	private String assignee;
 	private TaskStatus status;
 	private Date stopDate;
+
+	public String getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
 
 	public String getCreater() {
 		return creater;
